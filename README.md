@@ -1,7 +1,7 @@
 # FidelityFXOnVideo
 FidelityFX usable on video
 
-This software is write un .NET 5 and usable in CLI
+This software is write in .NET 5 and usable in CLI
 
 Work only on windows
 
