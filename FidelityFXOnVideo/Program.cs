@@ -9,24 +9,23 @@ namespace FidelityFXOnVideo
         {
             string inputFile = args[1];
 
-            FidelityFXOnVideo fov = new FidelityFXOnVideo(Path.GetFullPath(Path.GetDirectoryName(inputFile)), args[0]);
+            FidelityFXOnVideo fov = new(Path.GetFullPath(Path.GetDirectoryName(inputFile)), args[0]);
 
+            Console.WriteLine("Extracting video frames and audio");
             fov.FfmpegExtract(inputFile);
 
-            fov.FidelityFXProcessor(FidelityFXOnVideo.Mode.EASU, "-Scale 1440 1440", FidelityFXOnVideo.FRAMES_DIR, FidelityFXOnVideo.EASU_DIR);
+            Console.WriteLine("Apply EASU on frames");
+            fov.FidelityFXProcessor(FidelityFXOnVideo.Mode.EASU, $"-Scale {args[2]} {args[3]}");
 
-            //Directory.Delete(Path.Combine(fov.WorkingDirectory, FidelityFXOnVideo.FRAMES_DIR), true);
 
-            fov.FidelityFXProcessor(FidelityFXOnVideo.Mode.RCAS, "-Sharpness 0.2", FidelityFXOnVideo.EASU_DIR, FidelityFXOnVideo.RESULT_DIR);
+            Console.WriteLine("Apply RCAS on frames");
+            fov.FidelityFXProcessor(FidelityFXOnVideo.Mode.RCAS, "-Sharpness 0.2");
 
-            //Directory.Delete(Path.Combine(fov.WorkingDirectory, FidelityFXOnVideo.EASU_DIR), true);
 
+            Console.WriteLine("Video result rendering");
             fov.FfmpegRender(Path.Combine(fov.WorkingDirectory, Path.GetFileNameWithoutExtension(inputFile) + "_ALTERED" + Path.GetExtension(inputFile)));
 
-            //Directory.Delete(Path.Combine(fov.WorkingDirectory, FidelityFXOnVideo.RESULT_DIR), true);
-            File.Delete(Path.Combine(fov.WorkingDirectory, "audio.wav"));
-            File.Delete(Path.Combine(fov.WorkingDirectory, "params.txt"));
-            
+            Console.WriteLine("Finished");
         }
     }
 }
