@@ -135,9 +135,9 @@ namespace FidelityFXOnVideo
             Process proc = new();
             proc.StartInfo.FileName = "ffmpeg";
             proc.StartInfo.Arguments = $"-framerate {this.MediaInfo.PrimaryVideoStream.FrameRate.ToString(CultureInfo.InvariantCulture.NumberFormat)} " +
-                $"-i {Path.Combine(WorkingDirectory, RESULT_DIR, "frame%06d.jpg")} " +
-                $"-i {Path.Combine(WorkingDirectory, audioFile)} " +
-                $"-strict -2 {outputFile}";
+                $"-i \"{Path.Combine(WorkingDirectory, RESULT_DIR, "frame%06d.jpg")}\" " +
+                $"-i \"{Path.Combine(WorkingDirectory, audioFile)}\" " +
+                $"-strict -2 \"{outputFile}\"";
             proc.Start();
             proc.WaitForExit();
 
