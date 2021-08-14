@@ -5,6 +5,10 @@ This software is write in .NET 5 and usable in CLI
 
 Work only on windows due to Direct3D 11 dependence of FidelityFX-CLI
 
+## Binary
+
+Binary for 64-bit Windows is available here [Releases](https://github.com/neod/FidelityFXOnVideo/releases)
+
 ## Dependency
 
 you need to download `.NET 5`, `ffmpeg` and `FidelityFX-CLI` and add ffmpeg to the PATH 
