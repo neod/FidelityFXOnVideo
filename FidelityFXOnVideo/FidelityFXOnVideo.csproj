@@ -3,6 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <StartupObject>FidelityFXOnVideo.Program</StartupObject>
+    <Version>0.1.0</Version>
+    <RepositoryUrl>https://github.com/neod/FidelityFXOnVideo</RepositoryUrl>
+    <PackageIcon>FidelityFXOnVideopng.png</PackageIcon>
+    <PackageIconUrl />
+    <Authors>Damiano "Neod" Deplano</Authors>
+    <ApplicationIcon>FidelityFXOnVideopng.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
