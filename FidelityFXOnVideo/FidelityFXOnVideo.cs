@@ -104,20 +104,22 @@ namespace FidelityFXOnVideo
 
             Directory.CreateDirectory(Path.Combine(WorkingDirectory, FRAMES_DIR));
 
-            this.MediaInfo = FFProbe.Analyse(videoFullpathFile);
+            MediaInfo = FFProbe.Analyse(videoFullpathFile);
 
-            this.audioFile = $"audio.{MediaInfo.PrimaryAudioStream.CodecName}";
+            audioFile = (MediaInfo.PrimaryAudioStream != null) ? $"audio.{MediaInfo.PrimaryAudioStream.CodecName}" : null;
 
             FFMpegArguments.FromFileInput(videoFullpathFile)
                 .OutputToFile(Path.Combine(WorkingDirectory, FRAMES_DIR, "frame%06d.jpg"), true, args => args
                 .WithCustomArgument("-qscale:v 2"))
                 .ProcessSynchronously();
 
-            FFMpegArguments.FromFileInput(videoFullpathFile)
+            if (audioFile != null)
+            {
+                FFMpegArguments.FromFileInput(videoFullpathFile)
                 .OutputToFile(Path.Combine(WorkingDirectory, audioFile), true, args => args
                     .CopyChannel(FFMpegCore.Enums.Channel.Audio))
                 .ProcessSynchronously();
-
+            }
         }
 
         /// <summary>
@@ -129,9 +131,9 @@ namespace FidelityFXOnVideo
             Directory.Delete(Path.Combine(WorkingDirectory, EASU_DIR), true);
             Process proc = new();
             proc.StartInfo.FileName = "ffmpeg";
-            proc.StartInfo.Arguments = $"-framerate {this.MediaInfo.PrimaryVideoStream.FrameRate.ToString(CultureInfo.InvariantCulture.NumberFormat)} " +
+            proc.StartInfo.Arguments = $"-framerate {MediaInfo.PrimaryVideoStream.FrameRate.ToString(CultureInfo.InvariantCulture.NumberFormat)} " +
                 $"-i \"{Path.Combine(WorkingDirectory, RESULT_DIR, "frame%06d.jpg")}\" " +
-                $"-i \"{Path.Combine(WorkingDirectory, audioFile)}\" " +
+               ((audioFile != null) ? $"-i \"{Path.Combine(WorkingDirectory, audioFile)}\" " : "") +
                 $"-strict -2 \"{outputFile}\"";
             proc.Start();
             proc.WaitForExit();
@@ -144,7 +146,7 @@ namespace FidelityFXOnVideo
                 .ProcessSynchronously();*/
 
             Directory.Delete(Path.Combine(WorkingDirectory, RESULT_DIR), true);
-            File.Delete(Path.Combine(WorkingDirectory, audioFile));
+            if (audioFile != null) File.Delete(Path.Combine(WorkingDirectory, audioFile));
         }
     }
 }
