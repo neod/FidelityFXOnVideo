@@ -71,7 +71,7 @@ namespace FidelityFXOnVideo
             {
                 Array.Copy(files, i, subFiles, 0, Math.Min(step, files.Length - i));
 
-                string filesList = String.Join(' ', subFiles.Select(f => $"{Path.Combine(inputDir, Path.GetFileName(f))} {Path.Combine(outputDir, Path.GetFileName(f))}"));
+                string filesList = String.Join(' ', subFiles.Where(f => f != null).Select(f => $"{Path.Combine(inputDir, Path.GetFileName(f))} {Path.Combine(outputDir, Path.GetFileName(f))}"));
 
                 proc.StartInfo.Arguments = $"-Mode {mode} {args} {filesList}";
 
